@@ -30,6 +30,7 @@ class HydraRenderer {
     enableStreamCapture = true,
     canvas,
     precision,
+    gl,
     extendTransforms = {} // add your own functions on init
   } = {}) {
 
@@ -43,6 +44,7 @@ class HydraRenderer {
     this.detectAudio = detectAudio
 
     this._initCanvas(canvas)
+    this.gl = gl
 
     global.window.test = 'hi'
     // object that contains all properties that will be made available on the global context and during local evaluation
@@ -245,19 +247,35 @@ class HydraRenderer {
   }
 
   _initRegl () {
-    this.regl = regl({
-    //  profile: true,
-      canvas: this.canvas,
-      pixelRatio: 1//,
-      // extensions: [
-      //   'oes_texture_half_float',
-      //   'oes_texture_half_float_linear'
-      // ],
-      // optionalExtensions: [
-      //   'oes_texture_float',
-      //   'oes_texture_float_linear'
-     //]
-   })
+    if (this.gl){
+        this.regl = regl({
+      //  profile: true,
+        gl: this.gl,
+        pixelRatio: 1//,
+        // extensions: [
+        //   'oes_texture_half_float',
+        //   'oes_texture_half_float_linear'
+        // ],
+        // optionalExtensions: [
+        //   'oes_texture_float',
+        //   'oes_texture_float_linear'
+       //]
+     })
+    } else {
+      this.regl = regl({
+      //  profile: true,
+        canvas: this.canvas,
+        pixelRatio: 1//,
+        // extensions: [
+        //   'oes_texture_half_float',
+        //   'oes_texture_half_float_linear'
+        // ],
+        // optionalExtensions: [
+        //   'oes_texture_float',
+        //   'oes_texture_float_linear'
+       //]
+     })
+    }
 
     // This clears the color buffer to black and the depth buffer to 1
     this.regl.clear({
