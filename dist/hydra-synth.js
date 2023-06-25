@@ -2797,6 +2797,8 @@ class HydraSource {
       }
     }
 
+    // 
+    this.src.src = ""
     this.src = null;
     this.tex = this.regl.texture({
       shape: [1, 1]
